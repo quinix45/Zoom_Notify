@@ -167,41 +167,42 @@
     }
 
     // Initial scan to mark existing messages without notifying
-    let initialScanDone = false;
+    // let initialScanDone = false;
     
-    function initialScan() {
-        if (initialScanDone) return;
+    // function initialScan() {
+    //     if (initialScanDone) return;
         
-        console.log("📝 Running initial scan to mark existing messages...");
+    //     console.log("📝 Running initial scan to mark existing messages...");
         
-        // Temporarily disable notifications
-        const originalSendMessage = chrome.runtime.sendMessage;
-        chrome.runtime.sendMessage = function() {
-            // Do nothing during initial scan
-            console.log("🚫 Suppressed notification during initial scan");
-        };
+    //     // Temporarily disable notifications
+    //     const originalSendMessage = chrome.runtime.sendMessage;
+    //     chrome.runtime.sendMessage = function() {
+    //         // Do nothing during initial scan
+    //         console.log("🚫 Suppressed notification during initial scan");
+    //     };
         
-        // Run the scan
-        scanForMessages();
+    //     // Run the scan
+    //     scanForMessages();
         
-        // Restore original sendMessage
-        setTimeout(() => {
-            chrome.runtime.sendMessage = originalSendMessage;
-            initialScanDone = true;
-            console.log("✅ Initial scan complete - now monitoring for new messages");
-        }, 100);
-    }
+    //     // Restore original sendMessage
+    //     setTimeout(() => {
+    //         chrome.runtime.sendMessage = originalSendMessage;
+    //         initialScanDone = true;
+    //         console.log("✅ Initial scan complete - now monitoring for new messages");
+    //     }, 100);
+    // }
     
     // Run initial scan after a delay
-    setTimeout(initialScan, 3000);
+    // setTimeout(initialScan, 3000);
     
     // Regular scanning
-    setInterval(scanForMessages, 2000);
+    // setInterval(scanForMessages, 2000);
     
     // Optional: Mutation observer for faster detection
     function observeChatChanges() {
         const observer = new MutationObserver(() => {
-            setTimeout(scanForMessages, 100);
+            // setTimeout(scanForMessages, 100);
+            scanForMessages();
         });
         
         observer.observe(document.body, {
