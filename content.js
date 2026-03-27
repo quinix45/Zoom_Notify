@@ -34,8 +34,6 @@
     function isOwnMessage(msgElement) {
         // Check if this message is from "You"
         
-        // const senderElement = msgElement.closest('.chat-item')?.querySelector('.chat-item__sender');
-
         const allSenderElements = document.querySelectorAll('.chat-item__sender');
         const lastSenderElement = allSenderElements[allSenderElements.length - 1];
 
@@ -46,19 +44,7 @@
                 return true;
             }
         }
-        
-        // Also check tooltip messages
-        const tooltipContainer = msgElement.closest('.last-chat-message-tip__container');
-        if (tooltipContainer) {
-            const tooltipHeader = tooltipContainer.querySelector('.last-chat-message-tip__from-to');
-            if (tooltipHeader) {
-                const senderText = tooltipHeader.innerText.split(/\s+to\s+/i)[0];
-                if (senderText === "You" || senderText === "You (Host)") {
-                    return true;
-                }
-            }
-        }
-        
+                
         return false;
     }
 
