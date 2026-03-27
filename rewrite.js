@@ -1,19 +1,6 @@
 (function() {
     console.log("🕵️ Zoom Logger: Tooltip-Aware Sync Active...");
 
-    if (!window.loggedMessages) {
-        window.loggedMessages = new Set();
-    }
-    
-    // Track processed elements to avoid re-processing
-    if (!window.processedElements) {
-        window.processedElements = new WeakSet();
-    }
-    
-    // Track how many tooltip messages we've seen to skip them in the main list
-    if (window.tooltipSkipCount === undefined) {
-        window.tooltipSkipCount = 0;
-    }
 
 // JSON list to track messages
 
@@ -31,6 +18,21 @@ const Messages = {
     // Whether the notification for the message has already been sent
     Notified: null,
 };
+
+    // probably not needed, the JSON objects should be able to handle all of this
+    // if (!window.loggedMessages) {
+    //     window.loggedMessages = new Set();
+    // }
+    
+    // // Track processed elements to avoid re-processing
+    // if (!window.processedElements) {
+    //     window.processedElements = new WeakSet();
+    // }
+    
+    // // Track how many tooltip messages we've seen to skip them in the main list
+    // if (window.tooltipSkipCount === undefined) {
+    //     window.tooltipSkipCount = 0;
+    // }
 
     function extractTextWithEmojis(node) {
         let text = "";
@@ -69,7 +71,10 @@ const Messages = {
     // checks if chat is open in column mode
     if (document.getElementsByClassName("chat-header__header").length > 0)
         {
+      // CONTINUE HERE: find last with 
+      // <div class="new-chat-message__container" id="chat-message-content-5" aria-label="test to Everyone, 09:50 AM, hi" role="row"></div>
 
+    HTML_element = 
 
         } 
 
