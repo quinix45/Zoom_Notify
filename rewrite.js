@@ -15,6 +15,23 @@
         window.tooltipSkipCount = 0;
     }
 
+// JSON list to track messages
+
+const Messages = {
+    // message sender
+    sender: null,
+    // message receiver (either everyone or Private)
+    Receiver: null,
+    // text of the message
+    text: null ,
+    // Order of message
+    msg_index: null, 
+    // whether the message comes form the tooltip, floating chat, column chat
+    Element_origin: null,
+    // Whether the notification for the message has already been sent
+    Notified: null,
+};
+
     function extractTextWithEmojis(node) {
         let text = "";
         node.childNodes.forEach(child => {
@@ -49,21 +66,28 @@
     }
 
 
-    // function getSenderNameOfMostRecentMessage(messageElement)
-    // {
-
-    // }
-
-    //new-chat-message__container
-
     // checks if chat is open in column mode
-    // document.getElementsByClassName("chat-header__header").length > 0
+    if (document.getElementsByClassName("chat-header__header").length > 0)
+        {
 
-    // checks if chat is open in floating mode
-    //document.getElementById("chat-window") != null
 
-    // checks if tooltip exists
-    //document.getElementsByClassName("last-chat-message-tip__container").length > 0
+        } 
+
+    // checks if chat is open in floating mode    
+    else if (document.getElementById("chat-window") != null)
+        {
+
+
+
+        } 
+    
+    
+    // checks if tooltip exists   
+    else if (document.getElementsByClassName("last-chat-message-tip__container").length > 0)
+        {
+
+
+        };
     
 
     // Ideally, there should only be 1 new message every time this runs

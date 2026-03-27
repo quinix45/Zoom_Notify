@@ -17,3 +17,6 @@ if msg and "text" in msg:
 	text = msg["text"]
 	# Send notification
 	subprocess.run(["notify-send", "-t", "5000", "💬", f"{text}"])
+
+
+    
