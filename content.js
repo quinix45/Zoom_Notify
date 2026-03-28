@@ -53,16 +53,16 @@
 			return;
 
 		// Skips
-		if (message.receiver != "Everyone" || window.sentMessageIds.has(message.id)) {
-			console.log("Skipping:");
-			console.log(message);
+		if (message.receiver != "Everyone" || message.sender == "You" || window.sentMessageIds.has(message.id)) {
+			// console.log("Skipping:");
+			// console.log(message);
 			return;
 		}
 		// Send it
 		else {
 			window.sentMessageIds.add(message.id);
-			console.log("Sending");
-			console.log(message);
+			// console.log("Sending");
+			// console.log(message);
 
 			chrome.runtime.sendMessage({
 				action: "notify",
