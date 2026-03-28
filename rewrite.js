@@ -11,16 +11,8 @@
 			this.receiver = receiver;
 			// text of the message
 			this.text = text;
-
-
+            //messa
 			this.id = sender + receiver + text;
-
-			// // Order of message
-			// this.msg_index = msg_index;
-			// // whether the message comes form the tooltip, floating chat, column chat
-			// this.element_origin = element_origin;
-			// // Whether the notification for the message has already been sent
-			// this.notified = notified;
 		}
 	}
 
