@@ -1,38 +1,32 @@
 (function() {
     console.log("🕵️ Zoom Logger: Tooltip-Aware Sync Active...");
 
+	// Message Class
+	class Message {
+		
+		constructor(sender, receiver, text) {//}, msg_index, element_origin, notified = false) {
+			// message sender
+			this.sender = sender;
+			// message receiver (either everyone or Private)
+			this.receiver = receiver;
+			// text of the message
+			this.text = text;
 
-// JSON list to track messages
 
-const Messages = {
-    // message sender
-    sender: null,
-    // message receiver (either everyone or Private)
-    Receiver: null,
-    // text of the message
-    text: null ,
-    // Order of message
-    msg_index: null, 
-    // whether the message comes form the tooltip, floating chat, column chat
-    Element_origin: null,
-    // Whether the notification for the message has already been sent
-    Notified: null,
-};
+			this.id = sender + receiver + text;
 
-    // probably not needed, the JSON objects should be able to handle all of this
-    // if (!window.loggedMessages) {
-    //     window.loggedMessages = new Set();
-    // }
-    
-    // // Track processed elements to avoid re-processing
-    // if (!window.processedElements) {
-    //     window.processedElements = new WeakSet();
-    // }
-    
-    // // Track how many tooltip messages we've seen to skip them in the main list
-    // if (window.tooltipSkipCount === undefined) {
-    //     window.tooltipSkipCount = 0;
-    // }
+			// // Order of message
+			// this.msg_index = msg_index;
+			// // whether the message comes form the tooltip, floating chat, column chat
+			// this.element_origin = element_origin;
+			// // Whether the notification for the message has already been sent
+			// this.notified = notified;
+		}
+	}
+
+	// Initial execution stuff
+	window.sentMessageIds ??= new Set();
+
 
     function extractTextWithEmojis(node) {
         let text = "";
@@ -67,33 +61,69 @@ const Messages = {
         return false;
     }
 
+	function handleMostRecentChatMessage() {
 
-    // checks if chat is open in column mode
-    if (document.getElementsByClassName("chat-header__header").length > 0)
-        {
-      // CONTINUE HERE: find last with 
-      // <div class="new-chat-message__container" id="chat-message-content-5" aria-label="test to Everyone, 09:50 AM, hi" role="row"></div>
+		let message;
 
-    HTML_element = 
+		// checks if chat is open in column mode
+		if (document.getElementsByClassName("chat-header__header").length > 0) {
+			message = handleMessageInChat();
+		}
+		// checks if chat is open in floating mode
+		else if (document.getElementById("chat-window") != null) {
+			message = handleMessageInChat();
+		}
+		// checks if tooltip exists
+		else if (document.getElementsByClassName("last-chat-message-tip__container").length > 0) {
+			message = handleMessageFromToolTip();
+		}
 
-        } 
+		// Now send it (if we didn't already)
+		if (!window.sentMessageIds.has(message.id))
+		{
+			window.sentMessageIds.add(message.id);
+			console.log(message);
+		}
+		else
+			console.log("Skipped");
+	}
 
-    // checks if chat is open in floating mode    
-    else if (document.getElementById("chat-window") != null)
-        {
+	function getLatestMessageInChat() {
+		// CONTINUE HERE: find last with 
+		// <div class="new-chat-message__container" id="chat-message-content-5" aria-label="test to Everyone, 09:50 AM, hi" role="row"></div>
+
+		const nodeList = document.querySelectorAll(".new-chat-message__container");
+
+		const chatMessageContainer = nodeList[nodeList.length - 1];
+
+		// Fabio Setti to Everyone, 09:20 PM, ball
+		const fromAndTo = chatMessageContainer.getAttribute("aria-label");
+		const senderAndReceiver = fromAndTo.match(/^(.+?)\s+to\s+([^,]+)/);
+		const sender = senderAndReceiver[1];
+		const receiver = senderAndReceiver[2];
+
+		const text = extractTextWithEmojis(chatMessageContainer);
+
+		// id="chat-message-content-5"
+		// const msg_index = chatMessageContainer.getAttribute("id").match(/([0-9]+)$/);
+
+		return new Message(sender, receiver, text);//, msg_index, "chat", false);
+	}
+
+	function getLatestMessageFromToolTip() {
+		const tooltipContainer = document.querySelector(".last-chat-message-tip__container");
+
+		const fromAndTo = tooltipContainer.querySelector(".last-chat-message-tip__from-to").innerText;
+		const senderAndReceiver = fromAndTo.match(/^(.+?)\s+To\s+([^,]+)/);	// dodgy regex
+		const sender = senderAndReceiver[1];
+		const receiver = senderAndReceiver[2];
+
+		const text = extractTextWithEmojis(tooltipContainer.querySelector(".last-chat-message-tip__content-html"));
+
+		return new Message(sender, receiver, text);//, 99, "tooltip", false);
+	}
 
 
-
-        } 
-    
-    
-    // checks if tooltip exists   
-    else if (document.getElementsByClassName("last-chat-message-tip__container").length > 0)
-        {
-
-
-        };
-    
 
     // Ideally, there should only be 1 new message every time this runs
     function scanForMessages() {
