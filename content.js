@@ -26,10 +26,15 @@
 	// Test Entry Point
 	function setupTestButton() {
 		document.getElementById("test-button").addEventListener("click", () => {
-			console.log("button clicked!");
+
+			// First, grab the content of the input text thing
+			const inputText = document.getElementById("test-input").value;
+
+			console.log(`button clicked! Text: ${inputText}`);
+
 			chrome.runtime.sendMessage({
 				action: "notify",
-				text: 'Test: hello! :)'
+				text: inputText
 			});
 		});
 	}
