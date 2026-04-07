@@ -5,7 +5,11 @@
 
 	window.sentMessageIds ??= new Set();
 
-	setupTestButton();
+	// Setup test if on the test page
+	if (window.location.href.endsWith("Tester.html")) {
+		setupTestButton();
+	}
+	
 	observeChatChanges();
 
 	// Message Class
@@ -34,7 +38,7 @@
 
 			chrome.runtime.sendMessage({
 				action: "notify",
-				text: inputText
+				text: JSON.stringify(new Message("Tester", "Everyone", inputText))
 			});
 		});
 	}
@@ -83,7 +87,7 @@
 
 			chrome.runtime.sendMessage({
 				action: "notify",
-				text: `<b>${message.sender}:</b> ${message.text}`
+				text: JSON.stringify(message)
 			});
 		}
 	}
