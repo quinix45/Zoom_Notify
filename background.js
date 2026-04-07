@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener((request) => {
 	const platform = navigator.userAgentData.platform;
 
 	// Handle windows notification
+	// if (platform == "Windows" || platform == "Linux") {
 	if (platform == "Windows") {
 		// This uses chrome.notifications.create
 		console.log(`Sending message: ${request.text}`);
@@ -22,6 +23,7 @@ chrome.runtime.onMessage.addListener((request) => {
 		// });
 	}
 	// Handle Linux/Arch/Omarchy notification using `notify-send`
+	// else if (platform == "Linux") {
 	else {
 		// This connects to the python script for linux notify-send
 		const port = chrome.runtime.connectNative('com.zoom.logger');
