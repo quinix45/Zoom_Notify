@@ -5,6 +5,7 @@
 
 	window.sentMessageIds ??= new Set();
 
+	setupTestButton();
 	observeChatChanges();
 
 	// Message Class
@@ -20,6 +21,22 @@
 			// message ID
 			this.id = sender + receiver + text;
 		}
+	}
+
+	// Test Entry Point
+	function setupTestButton() {
+		document.getElementById("test-button").addEventListener("click", () => {
+
+			// First, grab the content of the input text thing
+			const inputText = document.getElementById("test-input").value;
+
+			console.log(`button clicked! Text: ${inputText}`);
+
+			chrome.runtime.sendMessage({
+				action: "notify",
+				text: inputText
+			});
+		});
 	}
 
 	// Entry point, check for DOM changes
