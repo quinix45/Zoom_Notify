@@ -125,12 +125,26 @@
 		const sender = senderAndReceiver[1];
 		const receiver = senderAndReceiver[2];
 
-		const text = extractTextWithEmojis(tooltipContainer.querySelector(".last-chat-message-tip__content-html"));
+		const text = extractTextWithEmojis(tooltipContainer.querySelector("._rtfEditor_1n3rs_1"));
 
 		return new Message(sender, receiver, text);//, 99, "tooltip", false);
 	}
 
+	// node should be a div with ._rtfEditor_1n3rs_1 class.
+	function extractText2(node) {
+		let text = "";
+
+		node.childNodes.forEach(child => {
+			
+		});
+
+		return text;
+	}
+
+	// node should be a div with ._rtfEditor_1n3rs_1 class.
 	function extractTextWithEmojis(node) {
+		// console.log(node.getAttribute("class"))
+
 		let text = "";
 		node.childNodes.forEach(child => {
 			if (child.nodeType === Node.TEXT_NODE) {
