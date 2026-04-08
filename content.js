@@ -131,32 +131,39 @@
 	}
 
 	// node should be a div with ._rtfEditor_1n3rs_1 class.
-	function extractText2(node) {
+	function extractTextWithEmojis(node) {
 		let text = "";
 
+		// Every child should be a p tag
 		node.childNodes.forEach(child => {
-			
+			if (child.tagName != 'P')
+			{
+				console.warn("P tag??? WTF??");
+				return;
+			}
+
+			text += extractTextFromPTag(child) + "\n";
 		});
 
-		return text;
+		return text.trimEnd();
 	}
 
-	// node should be a div with ._rtfEditor_1n3rs_1 class.
-	function extractTextWithEmojis(node) {
-		// console.log(node.getAttribute("class"))
+	function extractTextFromPTag(ptag) {
+		let result = "";
 
-		let text = "";
-		node.childNodes.forEach(child => {
-			if (child.nodeType === Node.TEXT_NODE) {
-				text += child.textContent;
-			} else if (child.nodeType === Node.ELEMENT_NODE) {
-				if (child.tagName === "IMG" && (child.dataset.emoji || child.alt)) {
-					text += child.dataset.emoji || child.alt;
-				} else {
-					text += extractTextWithEmojis(child);
-				}
+		ptag.childNodes.forEach(node => {
+			if (node.nodeType === Node.TEXT_NODE) {
+				// If it's text, append it directly
+				result += node.textContent;
+			} else if (node.nodeName === 'SPAN' && node.hasAttribute('data-emoji')) {
+				// If it's a span with a data-emoji attribute, append the emoji from the attribute
+				result += node.getAttribute('data-emoji');
+			} else if (node.nodeName === 'IMG' && node.hasAttribute('data-emoji')) {
+				// If it's an img with a data-emoji attribute, append the emoji from the attribute
+				result += node.getAttribute('data-emoji');
 			}
 		});
-		return text;
+
+		return result;
 	}
 })();
