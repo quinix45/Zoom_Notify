@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
-	"name": "Zoom Chat Logger Pro",
-	"version": "1.2",
+	"name": "Zoom Notify",
+	"version": "1.0",
 	"permissions": [
 		"nativeMessaging",
 		"notifications"
@@ -13,8 +13,7 @@
 		{
 			"matches": [
 				"https://*.zoom.us/*",
-				"file:///*/Zoom_Notify/Tester.html",
-				"file:///home/spacepaulls/Projects/Zoom_Notify/Tester.html"
+				"file:///*/Zoom_Notify/Tester.html"
 			],
 			"js": [
 				"content.js"
