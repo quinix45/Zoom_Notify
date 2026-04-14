@@ -5,7 +5,14 @@
 	"version": "1.0",
 	"permissions": [
 		"nativeMessaging",
-		"notifications"
+		"notifications",
+		"system.display"
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["notification.html", "notification.js", "icon.png"],
+			"matches": ["<all_urls>"]
+		}
 	],
 	"background": {
 		"service_worker": "background.js"
