@@ -1,12 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Zoom Notify Tester</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-family: system-ui, sans-serif;
+			background: #1a1a2e;
+			color: #e0e0e0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 2rem;
+			padding: 2rem;
+		}
+
+		h1 {
+			font-size: 1.4rem;
+			font-weight: 600;
+			color: #a0a8c8;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		.notification-row {
+			display: flex;
+			gap: 0.75rem;
+			align-items: center;
+		}
+
+		#test-input {
+			font-size: 1rem;
+			padding: 0.6rem 1rem;
+			width: 22rem;
+			background: #16213e;
+			border: 1px solid #2a2a5a;
+			border-radius: 6px;
+			color: #e0e0e0;
+			outline: none;
+			transition: border-color 0.15s;
+		}
+
+		#test-input:focus {
+			border-color: #5566cc;
+		}
+
+		#test-button {
+			font-size: 1rem;
+			padding: 0.6rem 1.4rem;
+			background: #3344aa;
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: background 0.15s;
+		}
+
+		#test-button:hover {
+			background: #4455cc;
+		}
+
+		.screen-share-section {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		.screen-share-buttons {
+			display: flex;
+			gap: 0.75rem;
+		}
+
+		#start, #stop {
+			font-size: 0.9rem;
+			padding: 0.5rem 1.2rem;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: background 0.15s;
+		}
+
+		#start {
+			background: #1a3a2e;
+			color: #6dbf8a;
+			border: 1px solid #2a6a4a;
+		}
+
+		#start:hover {
+			background: #1f4a38;
+		}
+
+		#stop {
+			background: #3a1a1a;
+			color: #bf6d6d;
+			border: 1px solid #6a2a2a;
+		}
+
+		#stop:hover {
+			background: #4a1f1f;
+		}
+
+		#stop:disabled {
+			opacity: 0.35;
+			cursor: not-allowed;
+		}
+
+		#video {
+			width: 320px;
+			aspect-ratio: 16/9;
+			border-radius: 6px;
+			border: 1px solid #2a2a5a;
+			background: #0d0d1a;
+			display: block;
+		}
+	</style>
 </head>
-<body style="width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center">
-	<textarea id="test-input" style="font-size: 24px; width: 30rem; height: 5rem; margin-right: 2rem;"></textarea>
-	<button id="test-button" style="font-size: 24px; width: 30rem; height: 5rem;">Send Notification</button>
+
+<body>
+	<h1>Zoom Notify Tester</h1>
+
+	<div class="notification-row">
+		<input type="text" id="test-input" placeholder="Notification message...">
+		<button id="test-button">Send Notification</button>
+	</div>
+
+	<div class="screen-share-section">
+		<div class="screen-share-buttons">
+			<button id="start">Start Screen Share</button>
+			<button id="stop" disabled>Stop Screen Share</button>
+		</div>
+		<video id="video" autoplay playsinline></video>
+	</div>
+
+	<script>
+		const videoElem = document.getElementById("video");
+		const startBtn = document.getElementById("start");
+		const stopBtn = document.getElementById("stop");
+
+		startBtn.onclick = async () => {
+			try {
+				const stream = await navigator.mediaDevices.getDisplayMedia({
+					video: { cursor: "always" },
+					audio: false
+				});
+				videoElem.srcObject = stream;
+				startBtn.disabled = true;
+				stopBtn.disabled = false;
+
+				stream.getTracks().forEach(track => {
+					track.onended = () => {
+						videoElem.srcObject = null;
+						startBtn.disabled = false;
+						stopBtn.disabled = true;
+					};
+				});
+			} catch (err) {
+				console.error("Error: " + err);
+			}
+		};
+
+		stopBtn.onclick = () => {
+			videoElem.srcObject?.getTracks().forEach(track => track.stop());
+			videoElem.srcObject = null;
+			startBtn.disabled = false;
+			stopBtn.disabled = true;
+		};
+	</script>
 </body>
+
 </html>
