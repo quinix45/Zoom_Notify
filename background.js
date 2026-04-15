@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener((request) => {
 
 	chrome.notifications.create({
 		type: "basic",
-		iconUrl: "icon.png",
+		iconUrl: "icon512.png",
 		title: message.sender,
 		message: message.text
 	}, (notificationId) => {
