@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Zoom Notify",
-	"description": "Sends notifications using the Chrome API when new messages are received in chat on Zoom. Make sure to allow notifications from Chrome.",
+	"description": "Sends notifications when new messages are received in chat on Zoom. Make sure to allow notifications from Chrome.",
 	"version": "1.0",
 	"permissions": [
 		"nativeMessaging",
