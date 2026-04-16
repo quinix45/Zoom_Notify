@@ -13,7 +13,7 @@
 		{
 			"matches": [
 				"https://*.zoom.us/*",
-				"file:///*/Zoom_Notify/Tester.html"
+				"file:///*/Tester.html"
 			],
 			"js": [
 				"content.js"
