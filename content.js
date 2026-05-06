@@ -19,11 +19,11 @@
 			// message sender
 			this.sender = sender;
 			// message receiver (either everyone or Private)
-			this.receiver = receiver;
+			this.receiver = receiver == "Meeting Group..." ? "Everyone" : receiver;
 			// text of the message
 			this.text = text;
 			// message ID
-			this.id = sender + receiver + text;
+			this.id = this.sender + this.receiver + this.text;
 		}
 	}
 
@@ -74,7 +74,8 @@
 			return;
 
 		// Skips
-		if (message.receiver != "Everyone" || message.sender == "You" || window.sentMessageIds.has(message.id)) {
+		// Message could be to "Everyone" or "Meeting Group..."
+		if (message.sender == "You" || window.sentMessageIds.has(message.id)) {
 			// console.log("Skipping:");
 			// console.log(message);
 			return;
@@ -138,7 +139,7 @@
 		node.childNodes.forEach(child => {
 			if (child.tagName != 'P')
 			{
-				console.warn("P tag??? WTF??");
+				console.warn("Zoom may have changed the layout of some things.");
 				return;
 			}
 
